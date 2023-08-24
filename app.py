@@ -3,13 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import bcrypt
 from flask_oauthlib.provider import OAuth2Provider
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos_with_auth.db'
+db_path = os.path.join(os.path.dirname(__file__), 'instance', 'todos_with_auth.db')
+db_uri = 'sqlite:///{}'.format(db_path)
+app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['SECRET_KEY'] = 'mysecret'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 oauth = OAuth2Provider(app)
+
 
 # Database models
 class User(db.Model):
@@ -17,11 +21,13 @@ class User(db.Model):
     username = db.Column(db.String(40), unique=True)
     password = db.Column(db.String(60))
 
+
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(128))
     completed = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
 # OAuth setup (simplified)
 class Client(db.Model):
@@ -30,14 +36,17 @@ class Client(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     _redirect_uris = db.Column(db.Text)
 
+
 @oauth.clientgetter
 def load_client(client_id):
     return Client.query.filter_by(client_id=client_id).first()
+
 
 @app.before_request
 def before_request():
     # Placeholder logic to set g.user based on OAuth token (implement this)
     g.user = None
+
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
@@ -50,12 +59,14 @@ def get_todos():
 
     return jsonify({'todos': [{'id': todo.id, 'task': todo.task, 'completed': todo.completed} for todo in todos]})
 
+
 @app.route('/todos/<int:todo_id>', methods=['GET'])
 def get_todo(todo_id):
     todo = Todo.query.get(todo_id)
     if todo is None:
         return jsonify({'error': 'Not found'}), 404
     return jsonify({'todo': {'id': todo.id, 'task': todo.task, 'completed': todo.completed}})
+
 
 @app.route('/todos', methods=['POST'])
 def add_todo():
@@ -64,6 +75,7 @@ def add_todo():
     db.session.add(new_todo)
     db.session.commit()
     return jsonify({'todo': {'id': new_todo.id, 'task': new_todo.task, 'completed': new_todo.completed}}), 201
+
 
 @app.route('/todos/<int:todo_id>', methods=['PUT'])
 def update_todo(todo_id):
@@ -76,6 +88,7 @@ def update_todo(todo_id):
     db.session.commit()
     return jsonify({'todo': {'id': todo.id, 'task': todo.task, 'completed': todo.completed}})
 
+
 @app.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -86,6 +99,7 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'message': 'User registered'})
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -99,6 +113,7 @@ def login():
         return jsonify({'message': 'Logged in'})
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
+
 
 if __name__ == '__main__':
     app.run(debug=True)
