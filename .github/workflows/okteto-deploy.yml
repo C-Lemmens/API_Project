@@ -31,7 +31,10 @@ jobs:
         context: .
         push: true
         tags: ns6jason/api_project:latest
+
+    - name: Initialize Okteto Context
+      run: okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_TOKEN }}
       
     - name: Deploy to Okteto
       run: |
-        okteto stack deploy --build
+        okteto deploy --build
