@@ -1,0 +1,30 @@
+name: Deploy to Okteto
+
+on:
+  push:
+    branches:
+      - main  # set your default branch here
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Okteto Cloud
+      uses: okteto/login@latest
+      with:
+        token: ${{ secrets.OKTETO_TOKEN }}
+      
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: true
+        tags: your-dockerhub-username/your-image-name:latest
+      
+    - name: Deploy to Okteto
+      run: |
+        okteto stack deploy --build
