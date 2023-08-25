@@ -6,6 +6,7 @@ furthermore you can create users and login
 
 hosted Front-end: https://api-project-cl.netlify.app
 hosted API:https://api-c-lemmens.cloud.okteto.net/todos
+github: https://github.com/C-Lemmens/API_Project
 
 get:
 ![img.png](pictures/img.png)
@@ -35,7 +36,8 @@ delete item:
 ![img_11.png](pictures/img_11.png)
 ![img_12.png](pictures/img_12.png)
 
-
+tests:
+![img_test.png](pictures/img_test.png)
 
 completed:
 1. ❔ ALGEMENE EISEN & DOCUMENTATIE (alles samen +50%)
