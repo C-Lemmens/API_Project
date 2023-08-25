@@ -1,8 +1,8 @@
-from flask import Flask, jsonify, request, g
+from flask import Flask, jsonify, request, g, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-import bcrypt
 from flask_oauthlib.provider import OAuth2Provider
+import bcrypt
 import os
 
 app = Flask(__name__)
@@ -139,6 +139,11 @@ def login():
         return jsonify({'message': 'Logged in'})
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

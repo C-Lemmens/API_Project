@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Todo List</h1>
+
+    <div id="todoList">
+        <!-- Todos will be appended here -->
+    </div>
+
+    <form id="addTodoForm">
+        <input type="text" id="task" placeholder="New Task">
+        <button type="submit">Add Todo</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+    function fetchTodos() {
+        $.get("/todos", function(data) {
+            $("#todoList").empty();
+            data.todos.forEach(function(todo) {
+                $("#todoList").append(`<div class="todoItem">
+                    ${todo.task} <button onclick="deleteTodo(${todo.id})">Delete</button>
+                </div>`);
+            });
+        });
+    }
+
+    function deleteTodo(todoId) {
+        $.ajax({
+            url: `/todos/${todoId}`,
+            type: 'DELETE',
+            success: function() {
+                fetchTodos();
+            }
+        });
+    }
+
+    $("#addTodoForm").submit(function(e) {
+        e.preventDefault();
+        const task = $("#task").val();
+        $.post("/todos", { task: task }, function() {
+            $("#task").val("");
+            fetchTodos();
+        });
+    });
+
+    window.deleteTodo = deleteTodo; // Make it accessible from HTML
+    fetchTodos(); // Initial fetch
+});
+
+    </script>
+</body>
+</html>

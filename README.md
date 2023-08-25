@@ -23,3 +23,12 @@ register user (post):
 update todo list item 1:
 ![img_5.png](pictures/img_5.png)
 ![img_6.png](pictures/img_6.png)
+
+completed items get: 
+![img_7.png](pictures/img_7.png)
+![img_8.png](pictures/img_8.png)
+
+delete item:
+![img_10.png](pictures/img_10.png)
+![img_11.png](pictures/img_11.png)
+![img_12.png](pictures/img_12.png)
