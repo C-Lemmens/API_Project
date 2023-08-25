@@ -105,6 +105,10 @@ h2{
     border: 2px solid #aaa;
 }
 
+.editMode {
+    border: 1px solid #ccc;
+}
+
 /* Overwrite the default button styling */
 button[type="submit"] {
     background: transparent;

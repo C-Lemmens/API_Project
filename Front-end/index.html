@@ -87,11 +87,12 @@ function toggleComplete(todoId, isCompleted) {
     }
 
     function editTodo(todoId) {
-        $(`#text-${todoId}`).hide();
-        $(`#edit-button-${todoId}`).hide();
-        $(`#edit-input-${todoId}`).show();
-        $(`#save-button-${todoId}`).show();
-    }
+    $(`#text-${todoId}`).hide();
+    $(`#edit-button-${todoId}`).hide();
+    $(`#edit-input-${todoId}`).show().addClass('editMode'); // add the class here
+    $(`#save-button-${todoId}`).show();
+    $(`#edit-input-${todoId}`).focus(); // This line to set focus
+}
 
     function saveTodo(todoId) {
         const updatedTask = $(`#edit-input-${todoId}`).val();
