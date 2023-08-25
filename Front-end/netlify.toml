@@ -1,3 +1,6 @@
+[build]
+  publish = "API_Project/Front-end/"
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
