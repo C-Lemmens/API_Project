@@ -68,6 +68,20 @@ def get_todo(todo_id):
     return jsonify({'todo': {'id': todo.id, 'task': todo.task, 'completed': todo.completed}})
 
 
+@app.route('/todos/completed', methods=['GET'])
+def get_completed_todos():
+    completed_todos = Todo.query.filter_by(completed=True).all()
+    return jsonify({
+        'todos': [
+            {
+                'id': todo.id,
+                'task': todo.task,
+                'completed': todo.completed
+            } for todo in completed_todos
+        ]
+    })
+
+
 @app.route('/todos', methods=['POST'])
 def add_todo():
     new_todo_data = request.get_json()
@@ -87,6 +101,18 @@ def update_todo(todo_id):
     todo.completed = updated_data.get('completed', todo.completed)
     db.session.commit()
     return jsonify({'todo': {'id': todo.id, 'task': todo.task, 'completed': todo.completed}})
+
+
+@app.route('/todos/<int:todo_id>', methods=['DELETE'])
+def delete_todo(todo_id):
+    todo = Todo.query.get(todo_id)
+    if todo is None:
+        return jsonify({'error': 'Not found'}), 404
+
+    db.session.delete(todo)
+    db.session.commit()
+
+    return jsonify({'result': 'Successfully deleted'})
 
 
 @app.route('/register', methods=['POST'])
