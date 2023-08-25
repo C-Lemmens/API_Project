@@ -15,7 +15,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 oauth = OAuth2Provider(app)
 
-CORS(app, resources={r"/todos/*": {"origins": "your-frontend-domain"}})
+CORS(app, resources={r"/todos/*": {"origins": "https://api-project-cl.netlify.app"}})
 
 
 # Database models
