@@ -58,20 +58,23 @@ $(document).ready(function() {
         });
     }
 
-function toggleCompleted(todoId) {
-    const todoElement = $(`#todo-${todoId}`);
-    const isChecked = $(`#checkbox-${todoId}`).prop('checked');
+function toggleComplete(todoId, isCompleted) {
+        $.ajax({
+            url: `https://api-c-lemmens.cloud.okteto.net/todos/${todoId}`,
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({ completed: isCompleted }),
+            success: function() {
+                fetchTodos();
+            }
+        });
+    }
 
-    $.ajax({
-        url: `https://api-c-lemmens.cloud.okteto.net/todos/${todoId}`,
-        type: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ completed: isChecked }),
-        success: function() {
-            fetchTodos();
-        }
+    $(document).on('change', '.complete-checkbox', function() {
+        const todoId = $(this).parent().attr('id').split('-')[1];
+        const isCompleted = $(this).prop('checked');
+        toggleComplete(todoId, isCompleted);
     });
-}
 
     function deleteTodo(todoId) {
         $.ajax({
@@ -124,9 +127,9 @@ function toggleCompleted(todoId) {
     window.deleteTodo = deleteTodo; // Make accessible from HTML
     window.editTodo = editTodo; // Make accessible from HTML
     window.saveTodo = saveTodo; // Make accessible from HTML
+    window.toggleCompleted = toggleCompleted; // Make accessible from HTML
 
     fetchTodos(); // Initial fetch
-    window.toggleCompleted = toggleCompleted; // Make accessible from HTML
 });
 
     </script>
