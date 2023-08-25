@@ -65,7 +65,7 @@ $(document).ready(function() {
     function saveTodo(todoId) {
     const updatedTask = $(`#edit-input-${todoId}`).val();
     $.ajax({
-        url: `http://api.example.com/todos/${todoId}`,
+        url: `https://api-c-lemmens.cloud.okteto.net/todos/${todoId}`,
         type: 'PUT',
         contentType: 'application/json', // Make sure to set the content type
         data: JSON.stringify({ task: updatedTask }),
@@ -79,7 +79,7 @@ $(document).ready(function() {
         e.preventDefault();
         const task = $("#task").val();
         $.ajax({
-            url: "http://api.example.com/todos",
+            url: "https://api-c-lemmens.cloud.okteto.net/todos",
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ task: task }),
