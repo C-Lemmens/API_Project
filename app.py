@@ -2,13 +2,11 @@ from flask import Flask, jsonify, request, g, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_oauthlib.provider import OAuth2Provider
-from flasgger import Swagger
 from flask_cors import CORS
 import bcrypt
 import os
 
 app = Flask(__name__)
-Swagger(app)
 db_path = os.path.join(os.path.dirname(__file__), 'instance', 'todos_with_auth.db')
 db_uri = 'sqlite:///{}'.format(db_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
@@ -55,15 +53,6 @@ def before_request():
 
 @app.route('/todos', methods=['GET'])
 def get_todos():
-    """
-       Get All Todos
-       ---
-       tags:
-         - Todo Operations
-       responses:
-         200:
-           description: List of all todos
-       """
     status = request.args.get('status', None)
     if status is not None:
         status = True if status.lower() == 'true' else False
@@ -76,22 +65,6 @@ def get_todos():
 
 @app.route('/todos/<int:todo_id>', methods=['GET'])
 def get_todo(todo_id):
-    """
-        Get Todo by ID
-        ---
-        tags:
-          - Todo Operations
-        parameters:
-          - name: todo_id
-            in: path
-            type: integer
-            required: true
-        responses:
-          200:
-            description: Todo details
-          404:
-            description: Todo not found
-        """
     todo = Todo.query.get(todo_id)
     if todo is None:
         return jsonify({'error': 'Not found'}), 404
@@ -169,11 +142,6 @@ def login():
         return jsonify({'message': 'Logged in'})
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 
 if __name__ == '__main__':
