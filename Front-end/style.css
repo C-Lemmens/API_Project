@@ -12,13 +12,26 @@ h1 {
     margin-bottom: 30px;
 }
 
+h2{
+    color: whitesmoke;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 #container {
     display: flex;
-    justify-content: space-around;
-    text-align: center;
-    margin: auto;
-    width: 40%;
-    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+#addTodoFormWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#addTodoForm {
+    margin-top: 20px;
 }
 
 #uncompletedTodoList,
