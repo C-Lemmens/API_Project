@@ -41,7 +41,8 @@ function fetchTodos() {
             const checked = todo.completed ? 'checked' : '';
             $(targetDiv).append(`
                 <div class="todoItem" id="todo-${todo.id}">
-                    <input type="checkbox" id="checkbox-${todo.id}" onclick="toggleCompleted(${todo.id})" ${checked}>
+                    <input type="checkbox" class="complete-checkbox" ${todo.completed ? 'checked' : ''}>
+                    <span id="text-${todo.id}">${todo.task}</span>
                     <label for="checkbox-${todo.id}"></label>
                     <span id="text-${todo.id}">${todo.task}</span>
                     <button onclick="editTodo(${todo.id})" id="edit-button-${todo.id}" class="icon-button edit-button">
@@ -55,6 +56,11 @@ function fetchTodos() {
                     </button>
                 </div>
             `);
+             if(todo.completed) {
+                $("#completedItems").append(todoItem);
+            } else {
+                $("#uncompletedItems").append(todoItem);
+            }
         });
     });
 }
