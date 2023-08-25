@@ -10,14 +10,19 @@
 <body>
     <h1>To-do list</h1>
     <div id="container">
-        <div id="todoList">
-            <!-- Populated by JavaScript -->
-        </div>
-        <form id="addTodoForm">
-            <input type="text" id="task">
-            <button type="submit"><i class="fas fa-plus"></i></button>
-        </form>
+    <div id="uncompletedTodoList">
+        <h2>Uncompleted Tasks</h2>
+        <!-- Populated by JavaScript -->
     </div>
+    <div id="completedTodoList">
+        <h2>Completed Tasks</h2>
+        <!-- Populated by JavaScript -->
+    </div>
+    <form id="addTodoForm">
+        <input type="text" id="task">
+        <button type="submit"><i class="fas fa-plus"></i></button>
+    </form>
+</div>
 
     <script>
 $(document).ready(function() {
@@ -27,6 +32,8 @@ $(document).ready(function() {
                 data.todos.forEach(function(todo) {
                     $("#todoList").append(`
                         <div class="todoItem" id="todo-${todo.id}">
+                    <input type="checkbox" id="checkbox-${todo.id}" onclick="toggleCompleted(${todo.id})" ${checked}>
+                    <label for="checkbox-${todo.id}"></label>
                             <span id="text-${todo.id}">${todo.task}</span>
                             <input type="text" id="edit-input-${todo.id}" value="${todo.task}" class="editInput" style="display:none;">
                             <button onclick="editTodo(${todo.id})" id="edit-button-${todo.id}" class="icon-button edit-button">

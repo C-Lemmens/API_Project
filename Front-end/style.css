@@ -13,10 +13,17 @@ h1 {
 }
 
 #container {
+    display: flex;
+    justify-content: space-around;
     text-align: center;
     margin: auto;
     width: 40%;
     padding: 10px;
+}
+
+#uncompletedTodoList,
+#completedTodoList {
+    width: 45%;
 }
 
 .todoItem {
