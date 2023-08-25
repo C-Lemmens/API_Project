@@ -1,12 +1,96 @@
-/* Add some basic styling */
+/* General styling */
 body {
-    font-family: Arial, sans-serif;
+    background-color: black;
+    color: lightgray;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin-top: 10%;
 }
 
-#todoList {
-    margin-bottom: 20px;
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#container {
+    text-align: center;
+    margin: auto;
+    width: 40%;
+    padding: 10px;
 }
 
 .todoItem {
-    margin: 5px;
+    background-color: #333;
+    color: lightgray;
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%; /* 40% smaller than the previous 100% width */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.editInput {
+    background-color: #333;
+    color: lightgray;
+    border: none;
+    padding: 5px;
+    width: 100%;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.icon-button.edit-button i {
+    color: blue;
+}
+
+.icon-button.save-button i {
+    color: green;
+}
+
+.icon-button.delete-button i {
+    color: red;
+}
+
+.todoItem {
+    /* ... existing styles ... */
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.todoItem span, .todoItem input, .todoItem button {
+    flex: 1;
+    text-align: left;
+    margin-right: 5px;
+}
+
+.todoItem button {
+    flex: 0; /* Do not grow or shrink */
+}
+
+.editInput:focus {
+    border: 2px solid #aaa;
+}
+
+/* Overwrite the default button styling */
+button[type="submit"] {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+button[type="submit"] i {
+    color: #aaa;
+}
+
+button[type="submit"]:hover i {
+    color: white;
 }

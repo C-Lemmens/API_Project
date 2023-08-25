@@ -4,32 +4,45 @@
     <meta charset="UTF-8">
     <title>Todo App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>Todo List</h1>
-
-    <div id="todoList">
-        <!-- Todos will be appended here -->
+    <h1>To-do list</h1>
+    <div id="container">
+        <div id="todoList">
+            <!-- Populated by JavaScript -->
+        </div>
+        <form id="addTodoForm">
+            <input type="text" id="task">
+            <button type="submit"><i class="fas fa-plus"></i></button>
+        </form>
     </div>
 
-    <form id="addTodoForm">
-        <input type="text" id="task" placeholder="New Task">
-        <button type="submit">Add Todo</button>
-    </form>
-
     <script>
-        $(document).ready(function() {
+$(document).ready(function() {
     function fetchTodos() {
-        $.get("/todos", function(data) {
-            $("#todoList").empty();
-            data.todos.forEach(function(todo) {
-                $("#todoList").append(`<div class="todoItem">
-                    ${todo.task} <button onclick="deleteTodo(${todo.id})">Delete</button>
-                </div>`);
+            $.get("/todos", function(data) {
+                $("#todoList").empty();
+                data.todos.forEach(function(todo) {
+                    $("#todoList").append(`
+                        <div class="todoItem" id="todo-${todo.id}">
+                            <span id="text-${todo.id}">${todo.task}</span>
+                            <input type="text" id="edit-input-${todo.id}" value="${todo.task}" class="editInput" style="display:none;">
+                            <button onclick="editTodo(${todo.id})" id="edit-button-${todo.id}" class="icon-button edit-button">
+    <i class="fas fa-edit"></i>
+</button>
+<button onclick="saveTodo(${todo.id})" id="save-button-${todo.id}" class="icon-button save-button" style="display:none;">
+    <i class="fas fa-save"></i>
+</button>
+<button onclick="deleteTodo(${todo.id})" class="icon-button delete-button">
+    <i class="fas fa-trash-alt"></i>
+</button>
+                        </div>
+                    `);
+                });
             });
-        });
-    }
+        }
 
     function deleteTodo(todoId) {
         $.ajax({
@@ -41,16 +54,49 @@
         });
     }
 
+    function editTodo(todoId) {
+    $(`#text-${todoId}`).hide();
+    $(`#edit-button-${todoId}`).hide();
+    $(`#edit-input-${todoId}`).show();
+    $(`#save-button-${todoId}`).show();
+    $(`#edit-input-${todoId}`).focus(); // Add this line to set focus
+}
+
+    function saveTodo(todoId) {
+    const updatedTask = $(`#edit-input-${todoId}`).val();
+    $.ajax({
+        url: `/todos/${todoId}`,
+        type: 'PUT',
+        contentType: 'application/json', // Make sure to set the content type
+        data: JSON.stringify({ task: updatedTask }),
+        success: function() {
+            fetchTodos();
+        }
+    });
+}
+
     $("#addTodoForm").submit(function(e) {
         e.preventDefault();
         const task = $("#task").val();
-        $.post("/todos", { task: task }, function() {
-            $("#task").val("");
-            fetchTodos();
+        $.ajax({
+            url: "/todos",
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ task: task }),
+            success: function() {
+                $("#task").val("");
+                fetchTodos();
+            },
+            error: function(error) {
+                console.log("Error:", error);
+            }
         });
     });
 
-    window.deleteTodo = deleteTodo; // Make it accessible from HTML
+    window.deleteTodo = deleteTodo; // Make accessible from HTML
+    window.editTodo = editTodo; // Make accessible from HTML
+    window.saveTodo = saveTodo; // Make accessible from HTML
+
     fetchTodos(); // Initial fetch
 });
 
