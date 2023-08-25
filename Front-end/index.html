@@ -13,11 +13,11 @@
     <div id="listContainer">
         <div id="uncompletedTodoList">
             <h2>Uncompleted Tasks</h2>
-            <!-- Populated by JavaScript -->
+            <div id="uncompletedItems"><!-- Populated by JavaScript --></div>
         </div>
         <div id="completedTodoList">
             <h2>Completed Tasks</h2>
-            <!-- Populated by JavaScript -->
+            <div id="completedItems"><!-- Populated by JavaScript --></div>
         </div>
     </div>
     <div id="addTodoFormWrapper">
@@ -33,8 +33,8 @@
 $(document).ready(function() {
 function fetchTodos() {
     $.get("https://api-c-lemmens.cloud.okteto.net/todos", function(data) {
-        $("#uncompletedTodoList").empty();
-        $("#completedTodoList").empty();
+        $("#uncompletedItems").empty();
+        $("#completedItems").empty();
 
         data.todos.forEach(function(todo) {
             const targetDiv = todo.completed ? "#completedTodoList" : "#uncompletedTodoList";
