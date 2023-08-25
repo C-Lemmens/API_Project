@@ -31,43 +31,32 @@
 
     <script>
 $(document).ready(function() {
-function fetchTodos() {
-    $.get("https://api-c-lemmens.cloud.okteto.net/todos", function(data) {
-        $("#uncompletedItems").empty();
-        $("#completedItems").empty();
+    // Fetch todos from server and populate the list
+    function fetchTodos() {
+        $.get("https://api-c-lemmens.cloud.okteto.net/todos", function(data) {
+            $("#uncompletedItems").empty();
+            $("#completedItems").empty();
 
-        data.todos.forEach(function(todo) {
-            const targetDiv = todo.completed ? "#completedTodoList" : "#uncompletedTodoList";
-            const checked = todo.completed ? 'checked' : '';
-            $(targetDiv).append(`
-                <div class="todoItem" id="todo-${todo.id}">
-                    <input type="checkbox" class="complete-checkbox" ${todo.completed ? 'checked' : ''}>
-                    <span id="text-${todo.id}">${todo.task}</span>
-                    <label for="checkbox-${todo.id}"></label>
-                    <span id="text-${todo.id}">${todo.task}</span>
-                    <button onclick="editTodo(${todo.id})" id="edit-button-${todo.id}" class="icon-button edit-button">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button onclick="saveTodo(${todo.id})" id="save-button-${todo.id}" class="icon-button save-button" style="display:none;">
-                        <i class="fas fa-save"></i>
-                    </button>
-                    <button onclick="deleteTodo(${todo.id})" class="icon-button delete-button">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            `);
-             if(todo.completed) {
-                $("#completedItems").append(todoItem);
-            } else {
-                $("#uncompletedItems").append(todoItem);
-            }
-             $("body").on('click', '.complete-checkbox', function() {
-    const todoId = $(this).parent().attr("id").split("-")[1];
-    // Ajax call to update the completion status, and then re-fetch the todos.
-});
+            data.todos.forEach(function(todo) {
+                const todoItem = `
+                    <div class="todoItem" id="todo-${todo.id}">
+                        <input type="checkbox" class="complete-checkbox" ${todo.completed ? 'checked' : ''}>
+                        <span id="text-${todo.id}">${todo.task}</span>
+                        <input type="text" id="edit-input-${todo.id}" value="${todo.task}" class="editInput" style="display:none;">
+                        <button onclick="editTodo(${todo.id})" id="edit-button-${todo.id}" class="icon-button edit-button"><i class="fas fa-edit"></i></button>
+                        <button onclick="saveTodo(${todo.id})" id="save-button-${todo.id}" class="icon-button save-button" style="display:none;"><i class="fas fa-save"></i></button>
+                        <button onclick="deleteTodo(${todo.id})" class="icon-button delete-button"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                `;
+
+                if(todo.completed) {
+                    $("#completedItems").append(todoItem);
+                } else {
+                    $("#uncompletedItems").append(todoItem);
+                }
+            });
         });
-    });
-}
+    }
 
 function toggleCompleted(todoId) {
     const todoElement = $(`#todo-${todoId}`);
@@ -95,15 +84,14 @@ function toggleCompleted(todoId) {
     }
 
     function editTodo(todoId) {
-    $(`#text-${todoId}`).hide();
-    $(`#edit-button-${todoId}`).hide();
-    $(`#edit-input-${todoId}`).show();
-    $(`#save-button-${todoId}`).show();
-    $(`#edit-input-${todoId}`).focus(); // Add this line to set focus
-}
+        $(`#text-${todoId}`).hide();
+        $(`#edit-button-${todoId}`).hide();
+        $(`#edit-input-${todoId}`).show();
+        $(`#save-button-${todoId}`).show();
+    }
 
     function saveTodo(todoId) {
-    const updatedTask = $(`#edit-input-${todoId}`).val();
+        const updatedTask = $(`#edit-input-${todoId}`).val();
     $.ajax({
         url: `https://api-c-lemmens.cloud.okteto.net/todos/${todoId}`,
         type: 'PUT',
