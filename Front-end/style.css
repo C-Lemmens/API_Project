@@ -24,6 +24,16 @@ h2{
     align-items: center;
 }
 
+#listContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#uncompletedTodoList, #completedTodoList {
+    width: 45%; /* Or whatever width suits you */
+}
+
 #addTodoFormWrapper {
     width: 100%;
     display: flex;
@@ -32,11 +42,6 @@ h2{
 
 #addTodoForm {
     margin-top: 20px;
-}
-
-#uncompletedTodoList,
-#completedTodoList {
-    width: 45%;
 }
 
 .todoItem {

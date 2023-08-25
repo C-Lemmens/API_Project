@@ -10,15 +10,16 @@
 <body>
     <h1>To-do list</h1>
     <div id="container">
-    <div id="uncompletedTodoList">
-        <h2>Uncompleted Tasks</h2>
-        <!-- Populated by JavaScript -->
+    <div id="listContainer">
+        <div id="uncompletedTodoList">
+            <h2>Uncompleted Tasks</h2>
+            <!-- Populated by JavaScript -->
+        </div>
+        <div id="completedTodoList">
+            <h2>Completed Tasks</h2>
+            <!-- Populated by JavaScript -->
+        </div>
     </div>
-    <div id="completedTodoList">
-        <h2>Completed Tasks</h2>
-        <!-- Populated by JavaScript -->
-    </div>
-    <!-- Moved the form here -->
     <div id="addTodoFormWrapper">
         <form id="addTodoForm">
             <input type="text" id="task">
@@ -26,6 +27,7 @@
         </form>
     </div>
 </div>
+
 
     <script>
 $(document).ready(function() {
