@@ -22,7 +22,7 @@
     <script>
 $(document).ready(function() {
     function fetchTodos() {
-            $.get("/todos", function(data) {
+            $.get("https://api-c-lemmens.cloud.okteto.net/todos", function(data) {
                 $("#todoList").empty();
                 data.todos.forEach(function(todo) {
                     $("#todoList").append(`
@@ -46,7 +46,7 @@ $(document).ready(function() {
 
     function deleteTodo(todoId) {
         $.ajax({
-            url: `/todos/${todoId}`,
+            url: `https://api-c-lemmens.cloud.okteto.net/todos/${todoId}`,
             type: 'DELETE',
             success: function() {
                 fetchTodos();
@@ -65,7 +65,7 @@ $(document).ready(function() {
     function saveTodo(todoId) {
     const updatedTask = $(`#edit-input-${todoId}`).val();
     $.ajax({
-        url: `/todos/${todoId}`,
+        url: `http://api.example.com/todos/${todoId}`,
         type: 'PUT',
         contentType: 'application/json', // Make sure to set the content type
         data: JSON.stringify({ task: updatedTask }),
@@ -79,7 +79,7 @@ $(document).ready(function() {
         e.preventDefault();
         const task = $("#task").val();
         $.ajax({
-            url: "/todos",
+            url: "http://api.example.com/todos",
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({ task: task }),
