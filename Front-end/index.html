@@ -61,6 +61,10 @@ function fetchTodos() {
             } else {
                 $("#uncompletedItems").append(todoItem);
             }
+             $("body").on('click', '.complete-checkbox', function() {
+    const todoId = $(this).parent().attr("id").split("-")[1];
+    // Ajax call to update the completion status, and then re-fetch the todos.
+});
         });
     });
 }
