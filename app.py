@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, g, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_oauthlib.provider import OAuth2Provider
+from flask_cors import CORS
 import bcrypt
 import os
 
@@ -13,6 +14,8 @@ app.config['SECRET_KEY'] = 'mysecret'
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 oauth = OAuth2Provider(app)
+
+CORS(app, resources={r"/todos/*": {"origins": "your-frontend-domain"}})
 
 
 # Database models
